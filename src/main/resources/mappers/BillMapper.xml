@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tony.book_kepping.repository.BillMapper">
+    <resultMap id="billResultMap" type="com.tony.book_kepping.domain.Bill">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="bill_time" property="billTime" javaType="java.sql.Date" jdbcType="DATE" />
+        <result column="price" property="price" />
+        <result column="explain" property="explain" />
+        <association property="billType" column="type_id" javaType="com.tony.book_kepping.domain.BillType">
+            <id column="id" property="id" />
+            <result column="name" property="name" />
+        </association>
+    </resultMap>
+    
+    <insert id="save" parameterType="com.tony.book_kepping.domain.Bill">
+        INSERT INTO bill(title, bill_time, price, explain, type_id)
+        VALUES(#{title}, #{billTime}, #{price}, #{explain}, #{billType.id})
+    </insert>
+
+    <select id="selectAll" parameterType="com.tony.book_kepping.domain.Conditon">
+        SELECT * FROM bill
+        <where>
+            <if test="billType != null">
+                AND type_id = #{billType.id}
+            </if>
+            <if test="fromBillTime != null and toBillTime != null">
+                AND fromBillTime between #{fromBillTime} and #{toBillTime}
+            </if>
+        </where>
+    </select>
+</mapper>

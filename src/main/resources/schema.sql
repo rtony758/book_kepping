@@ -11,6 +11,7 @@ id INT PRIMARY KEY AUTO_INCREMENT
 ,title VARCHAR(50)
 ,bill_time DATE
 ,type_id INT
+,price DOUBLE
 ,explain VARCHAR(500)
 );
 
